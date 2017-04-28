@@ -107,9 +107,9 @@ int gpio_read_value(int gpio_num)
 
 int gpio_write(int gpio_num, int value)
 {
-	if(gpio_open(gpio_num) != 0) return -1;
-	if(gpio_write_value(gpio_num, value) != 0) return -1;
-	if(gpio_close(gpio_num) != 0) return -1;
+	if(!gpio_open(gpio_num)) return -1;
+	if(!gpio_write_value(gpio_num, value)) return -1;
+	if(!gpio_close(gpio_num)) return -1;
 	return 0;
 }
 
@@ -117,10 +117,10 @@ int gpio_read(int gpio_num)
 {
 	int value;
 
-	if(gpio_open(gpio_num) != 0) return -1;
+	if(!gpio_open(gpio_num)) return -1;
 	value = gpio_read_value(gpio_num);
 	if(value < 0) return -1;
-	if(gpio_close(gpio_num) != 0) return -1;
+	if(!gpio_close(gpio_num)) return -1;
 	return value;
 }
 
