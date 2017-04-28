@@ -20,7 +20,7 @@ int gpio_open(int gpio_num)
 {
 	int fd = 0;
 	int len = 0;
-	char *file_path = "/sys/class/gpio/export";
+	const char *file_path = "/sys/class/gpio/export";
 	char num_string[100];
 
 	if(gpio_check_num(gpio_num)) return -1;
@@ -38,7 +38,7 @@ int gpio_close(int gpio_num)
 {
 	int fd = 0;
 	int len = 0;
-	char *file_path = "/sys/class/gpio/unexport";
+	const char *file_path = "/sys/class/gpio/unexport";
 	char num_string[100];
 
 	if(gpio_check_num(gpio_num)) return -1;
@@ -102,6 +102,25 @@ int gpio_read_value(int gpio_num)
 	if(len == -1) return -1;
 	close(fd);
 	value = atoi(buf);
+	return value;
+}
+
+int gpio_write(int gpio_num, int value)
+{
+	if(gpio_open(gpio_num) != 0) return -1;
+	if(gpio_write_value(gpio_num, value) != 0) return -1;
+	if(gpio_close(gpio_num) != 0) return -1;
+	return 0;
+}
+
+int gpio_read(int gpio_num)
+{
+	int value;
+
+	if(gpio_open(gpio_num) != 0) return -1;
+	value = gpio_read_value(gpio_num);
+	if(value < 0) return -1;
+	if(gpio_close(gpio_num) != 0) return -1;
 	return value;
 }
 

@@ -15,3 +15,6 @@ int gpio_setmode(int, int);
 int gpio_write_value(int, int);
 int gpio_read_value(int);
 
+int gpio_write(int, int);
+int gpio_read(int);
+
